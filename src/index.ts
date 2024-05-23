@@ -1,23 +1,9 @@
-import { Client } from "discord.js";
-import { config } from "./config";
-import { commands } from "./commands";
 
-const client = new Client({
-  intents: ["DirectMessages"],
-});
-
-client.once("ready", () => {
-  console.log("Discord bot is ready! 🤖");
-});
-
-client.on("interactionCreate", async (interaction) => {
-  if (!interaction.isCommand()) {
-    return;
-  }
-  const { commandName } = interaction;
-  if (commands[commandName as keyof typeof commands]) {
-    commands[commandName as keyof typeof commands].execute(interaction);
-  }
-});
-
-client.login(config.DISCORD_TOKEN);
+export async function handler() {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: "Hello from Lambda!",
+    }),
+  };
+}

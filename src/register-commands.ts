@@ -14,7 +14,7 @@ interface Command {
 
 (async () => {
   try {
-    // Delete all commands using for loop
+    // Delete all existing commands
     const registeredCommands = await rest.get(Routes.applicationCommands(config.DISCORD_CLIENT_ID)) as Command[];
     for (const command of registeredCommands) {
       console.log(`Deleting command: '${command.name}' with id: ${command.id}`);
@@ -27,7 +27,7 @@ interface Command {
       body: commandsData,
     });
 
-    console.log("Successfully reloaded application (/) commands.");
+    console.log("Successfully registered application (/) commands.");
   } catch (error) {
     console.error(error);
   }
