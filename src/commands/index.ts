@@ -1,5 +1,7 @@
-import * as ping from "./ping";
+import * as hello from "./hello";
+import * as echo from "./echo";
 
 export const commands = {
-  ping,
+  hello,
+  echo,
 };

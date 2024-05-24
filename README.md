@@ -14,11 +14,41 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `npx cdk synth`   emits the synthesized CloudFormation template
 
 
-## Steps
-### Setup
-- run init command: `cdk init app --language typescript`
-- install dependencies: `npm install discord.js dotenv`
-- install dev-dependencies: `npm install -D typescript`
-- copy the `src` code
-- update `script` portion of the `package.json` file
-- deploy the cdk stack: `npx cdk deploy`
+## Setup-Guide
+#### 1. Initialize your CDK project
+```bash
+cdk init app --language=typescript`
+```
+#### 2. Install necessary dependencies
+```bash
+npm install @types/aws-lambda dotenv discord.js discord-interactions 
+npm install -D typescript jest @types/jest @types/aws-lambda ts-jest esbuild
+```
+#### 3. Configure `tsconfig.json`
+```json
+{
+  "compilerOptions": {
+    ...
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist"
+  },
+}
+```
+#### 4. Create Lambda handler in `lambda/handler.ts`
+```typescript
+// copy the file
+```
+
+#### 5. Define the CDK stack in `lib/discord-bot-stack.ts`
+```typescript
+// copy the file
+```
+
+#### 6. Bootstrap & deploy
+```bash
+cdk bootstrap
+cdk deploy
+```
+

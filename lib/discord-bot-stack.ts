@@ -1,34 +1,42 @@
-import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import { config } from '../src/config';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { CfnOutput, Stack, StackProps } from "aws-cdk-lib";
+import { LambdaIntegration, RestApi } from "aws-cdk-lib/aws-apigateway";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { Construct } from "constructs";
+import { config } from "dotenv";
 
-export class DiscordBotStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+config();
+
+export class DiscordBotStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    const interactionLambda = new lambda.Function(this, "InteractionHandler", {
-      runtime: lambda.Runtime.NODEJS_LATEST,
-      timeout: cdk.Duration.seconds(5),
-      code: lambda.Code.fromAsset("src"),
-      handler: "index.handler",
+    const lambdaFunction = new NodejsFunction(this, "DiscordBotHandler", {
+      runtime: Runtime.NODEJS_LATEST,
+      entry: "src/lambda/handler.ts",
+      handler: "handler",
       environment: {
-        DISCORD_PUBLIC_KEY: config.DISCORD_PUBLIC_KEY || "",
+        DISCORD_PUBLIC_KEY: process.env.DISCORD_PUBLIC_KEY || "",
       },
     });
 
-    const functionUrl = interactionLambda.addFunctionUrl({
-      authType: lambda.FunctionUrlAuthType.NONE,
-      cors: {
-        allowedOrigins: ["*"],
-        allowedMethods: [lambda.HttpMethod.ALL],
-        allowedHeaders: ["*"],
+    const api = new RestApi(this, "discordBotApi", {
+      restApiName: "Discord Bot Service",
+      description: "This service handles Discord bot interactions.",
+    });
+
+    const interactions = api.root.addResource("interactions", {
+      defaultCorsPreflightOptions: {
+        allowOrigins: ["*"],
+        allowMethods: ["POST"],
+        allowHeaders: ["*"],
       },
     });
+    const postIntegration = new LambdaIntegration(lambdaFunction);
+    interactions.addMethod("POST", postIntegration);
 
-    new cdk.CfnOutput(this, "FunctionUrl", {
-      value: functionUrl.url,
+    new CfnOutput(this, "InteractionsApiUrl", {
+      value: api.urlForPath("/interactions"),
     });
-
   }
 }

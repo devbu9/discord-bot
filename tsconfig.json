@@ -6,6 +6,10 @@
       "es2020",
       "dom"
     ],
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
     "declaration": true,
     "strict": true,
     "noImplicitAny": true,
