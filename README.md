@@ -19,11 +19,13 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ```bash
 cdk init app --language=typescript`
 ```
+
 #### 2. Install necessary dependencies
 ```bash
 npm install @types/aws-lambda dotenv discord.js discord-interactions 
 npm install -D typescript jest @types/jest @types/aws-lambda ts-jest esbuild
 ```
+
 #### 3. Configure `tsconfig.json`
 ```json
 {
@@ -36,6 +38,7 @@ npm install -D typescript jest @types/jest @types/aws-lambda ts-jest esbuild
   },
 }
 ```
+
 #### 4. Create Lambda handler in `lambda/handler.ts`
 ```typescript
 // copy the file

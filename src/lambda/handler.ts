@@ -40,7 +40,6 @@ export const handler = async (
 
   try {
     const commandName = body.data.name;
-    console.log(`Body: ${JSON.stringify(body.data)}`);
     const content = body.data.options?.[0].value;
     let responseContent = "Hello from Lambda!";
     if (commands[commandName as keyof typeof commands]) {
@@ -54,7 +53,7 @@ export const handler = async (
       body: JSON.stringify({ type: 4, data: { content: responseContent } }),
     };
   } catch (error) {
-    console.log(`Error: ${error}`);
+    console.error(`Error: ${error}`);
     return { statusCode: 500, body: "Internal Server Error" };
   }
 };
