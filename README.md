@@ -39,19 +39,25 @@ npm install -D typescript jest @types/jest @types/aws-lambda ts-jest esbuild
 }
 ```
 
-#### 4. Create Lambda handler in `lambda/handler.ts`
-```typescript
-// copy the file
+### 4. update npm commands in `package.json`
+```json
+"scripts": {
+    "clean": "rm -rf dist && rm -rf cdk.out",
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "register": "node dist/src/commands/register-commands.js",
+    "deploy": "npm run clean && npm run build && npm run register && cdk deploy"
+  },
 ```
 
-#### 5. Define the CDK stack in `lib/discord-bot-stack.ts`
+#### 5. Copy the files under `lib` and `src`
 ```typescript
-// copy the file
+// Copy the entire folder
 ```
 
 #### 6. Bootstrap & deploy
 ```bash
-cdk bootstrap
-cdk deploy
+npm run deploy
 ```
 
